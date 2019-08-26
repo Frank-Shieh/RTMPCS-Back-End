@@ -6,4 +6,17 @@
     {% for post in posts %}
     <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
     {% endfor %}
+    <div class="container">
+    <h1>File Input</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <div class = "form-group">
+            <label for="inputFile">File input</label>
+            <input type="file" name="inputFile">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+        <div>
+            <h2>{{ upload_status }}</h2>
+        </div>
+    </form>
+    </div>
 {% endblock %}

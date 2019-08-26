@@ -1,9 +1,11 @@
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
-from . import app,db
-from .models import User
+from werkzeug.utils import secure_filename
+from . import app, db
+from .models import User, Video
 from .forms import LoginForm, RegistrationForm
+import os
 
 
 @app.route('/')
@@ -61,3 +63,20 @@ def register():
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    file = request.files['inputFile']
+    basePath = os.path.join(os.path.dirname(__file__), 'user')
+    if not os.path.exists(basePath):
+        os.makedirs(basePath)
+    # 文件名尚未更改，多文件上传尚未实现
+    uploadPath = os.path.join(basePath, secure_filename(file.filename))
+    file.save(uploadPath)
+    upload_status = 'saved'
+    newVideo = Video(location=uploadPath)
+    db.session.add(newVideo)
+    db.session.commit()
+    return render_template('index.html', upload_status = upload_status)
+
