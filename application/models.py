@@ -34,6 +34,15 @@ class Video(db.Model):
     location = db.Column(db.String(200), nullable=False)
 
 
+class History(db.Model):
+    id = db.Column(db.Integer, nullable=False, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    count = db.Column(db.Integer, nullable=False)
+    video_id = db.Column(db.Integer, nullable=False)
+    submmit_time = db.Column(db.DATETIME, nullable=False)
+    status = db.Column(db.Integer, nullable=False)
+
+
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
