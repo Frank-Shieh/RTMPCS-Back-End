@@ -1,22 +1,79 @@
 <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>echarts</title>
+</head>
+
+<body>
 {% extends "base.html" %}
 
 {% block content %}
     <h1>Hi, {{ current_user.name }}!</h1>
     {% for post in posts %}
-    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+        <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
     {% endfor %}
     <div class="container">
-    <h1>File Input</h1>
-    <form method="POST" action="/upload" enctype="multipart/form-data">
-        <div class = "form-group">
-            <label for="inputFile">File input</label>
-            <input type="file" name="inputFile">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-        <div>
-            <h2>{{ upload_status }}</h2>
-        </div>
-    </form>
+        <h1>File Input</h1>
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="inputFile">File input</label>
+                <input type="file" name="inputFile">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+            <div>
+                <h2>{{ upload_status }}</h2>
+            </div>
+        </form>
     </div>
+    {# retrieve_history function   #}
+    <div>
+        <a href="{{ url_for('retrieve_history') }}">checkHistory</a>
+    </div>
+    {# notification function   #}
+
+    <button id="btn" >
+        Messages
+        {% set new_messages = current_user.new_messages() %}
+        <span id="message_count" class="badge" style="visibility:
+                {% if new_messages %}
+                    visible
+                {% else %}
+                    hidden
+                {% endif %};">
+            {{ new_messages }}
+        </span>
+    </button>
+
+
+    <p>数据展示：
+        <input type="text" id ="NAME">
+        <input type="text" id ="AGE"></p>
+    <p>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+    <script>
+        $(function() {
+            // body...
+            $("#btn").click(function(){
+                $.ajax({
+                url: "/retrieve_notification",
+                type: "POST",
+                dataType: "json",
+                success: function (data) {
+                // alert(data.name + ":" + data.age);
+                $("#NAME").val(data[0].id);
+                $("#AGE").val(data[0].content);
+                console.log(data)}
+
+                })
+            })
+        })
+    </script>
+
 {% endblock %}
+</body>
+
+</html>

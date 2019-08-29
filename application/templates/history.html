@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <table border="1">
+        <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Count</th>
+            <th>Download</th>
+            <th>Delete</th>
+        </tr>
+        {% for history in histories %}
+            <tr>
+                <td>{{history.History.submit_time}}</td>
+                <td>{{history.Video.name}}</td>
+                <td>{{history.History.count}}</td>
+                <td><input type="button" onclick="location.href='{{ url_for('downloadVideo',id=history.Video.id) }}'"></td>
+                <td>delete</td>
+            </tr>
+        {% endfor %}
+
+    </table>
+{% endblock %}

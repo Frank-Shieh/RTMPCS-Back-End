@@ -1,13 +1,14 @@
 from concurrent.futures import ThreadPoolExecutor
 
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, send_from_directory
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 from . import app, db
-from .models import User, Video
+from .models import User, Video, History, Message
 from .forms import LoginForm, RegistrationForm
 from .utils import run_detection
+import json
 import os
 
 executor = ThreadPoolExecutor(2)
@@ -82,8 +83,32 @@ def upload():
     username = current_user.__getattr__('name')
     # 异步处理
     executor.submit(run_detection, 0.5, 0.5, uploadPath, username)
-
     upload_status = 'saved'
-
     return render_template('index.html', upload_status = upload_status)
 
+
+@app.route('/retrieve_history', methods=['GET', 'POST'])
+def retrieve_history():
+    user = User.query.filter_by(name=current_user.__getattr__('name')).first()
+    histories = db.session.query(History, Video).filter(History.video_id == Video.id).filter_by(user_id=user.id, status=1).all()
+    # histories = History.query.filter_by(user_id=user.id, status = 1).all()
+    return render_template('history.html', histories=histories)
+
+
+@app.route('/downloadVideo/<path:id>', methods=['GET', 'POST'])
+def downloadVideo(id):
+    videoLocation = db.session.query(Video.location).filter_by(id=id).first()
+    videoLocation = os.path.normpath(videoLocation[0])
+    return send_from_directory(os.path.dirname(videoLocation), os.path.basename(videoLocation), as_attachment=True)
+
+
+@app.route('/retrieve_notification', methods=['GET', 'POST'])
+def retrieve_notification():
+    user = User.query.filter_by(name=current_user.__getattr__('name')).first()
+    notifications = Message.query.filter_by(user_id=user.id).all()
+    messages = {}
+    counter = 0
+    for msg in notifications:
+        messages[counter] = msg.to_json()
+        counter = counter + 1
+    return json.dumps(messages)

@@ -1,6 +1,6 @@
 from ..video_detection.detect import yolo_detection
 import os
-from .models import Video, User, History
+from .models import Video, User, History, Message
 from . import app, db
 from flask_login import current_user
 from datetime import datetime
@@ -20,8 +20,15 @@ def run_detection(iou_threshold, confidence_threshold, source_address, username)
     video_id = newVideo.id
     # get current user id
     user = User.query.filter_by(name=username).first()
+
     # add history
     newHistory = History(user_id=user.id, count=people_number,
-                         video_id=video_id, submmit_time=datetime.now(), status= 1)
+                         video_id=video_id, submit_time=datetime.now(), status= 1)
     db.session.add(newHistory)
+
+    # send notification to user
+    msg_content = os.path.basename(outputFilePath)+" completed."
+    msg = Message(recipient=user, body=msg_content)
+    db.session.add(msg)
+
     db.session.commit()

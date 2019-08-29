@@ -2,13 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c525bd80-ce11-4d9a-8757-0e523050bcc0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/video_detection/trackingModule/centroidtracker.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/video_detection/trackingModule/trackableobject.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/back-end project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/back_end_project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/frank/output/example_01.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/frank/source/example_01.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/templates/history.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/user/img-Z19170759-0001.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/user/jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/people-counter.sql" beforeDir="false" afterPath="$PROJECT_DIR$/people-counter.sql" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,8 +38,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Flask Main" />
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -49,7 +53,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/people-counter.py" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -192,7 +196,10 @@
       <workItem from="1566874127560" duration="4764000" />
       <workItem from="1566878961924" duration="2534000" />
       <workItem from="1566881901228" duration="700000" />
-      <workItem from="1566882734356" duration="7897000" />
+      <workItem from="1566882734356" duration="9105000" />
+      <workItem from="1566965886467" duration="1294000" />
+      <workItem from="1566970407867" duration="4570000" />
+      <workItem from="1567038357102" duration="17172000" />
     </task>
     <task id="LOCAL-00001" summary="version 0.1.0">
       <created>1566546365130</created>
@@ -215,7 +222,14 @@
       <option name="project" value="LOCAL" />
       <updated>1566803197826</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="1.combine yolo3 detection algorithm. 2. save output video and record the history into database">
+      <created>1566890774101</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1566890774101</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,6 +238,37 @@
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
       <map>
+        <entry key="1">
+          <value>
+            <State>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="COLUMN_WIDTH">
+                <map>
+                  <entry key="2" value="133" />
+                  <entry key="3" value="90" />
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
         <entry key="MAIN">
           <value>
             <State>
@@ -233,16 +278,22 @@
         </entry>
       </map>
     </option>
+    <option name="OPEN_TABS">
+      <set>
+        <option value="1" />
+      </set>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="version 0.1.0" />
     <MESSAGE value="add database sql file" />
     <MESSAGE value="add upload function" />
-    <option name="LAST_COMMIT_MESSAGE" value="add upload function" />
+    <MESSAGE value="1.combine yolo3 detection algorithm. 2. save output video and record the history into database" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.combine yolo3 detection algorithm. 2. save output video and record the history into database" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/back_end_project$Flask__manage_py_.coverage" NAME="Flask (manage.py) Coverage Results" MODIFIED="1566454070685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/back_end_project$people_counter.coverage" NAME="people-counter Coverage Results" MODIFIED="1566883167596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/back_end_project$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1566890376601" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/back_end_project$Flask.coverage" NAME="Flask Coverage Results" MODIFIED="1567062330763" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
