@@ -1,9 +1,11 @@
 from . import db
+from time import time
+import jwt
+from . import app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login
-from datetime import datetime, date
-import json, decimal
+from datetime import datetime
 
 
 class Role(db.Model):
@@ -18,6 +20,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     name = db.Column(db.String(30), unique=True, nullable=False)
     password = db.Column(db.String(30), nullable=True)
+    email = db.Column(db.String(50), nullable=True)
     status = db.Column(db.Integer, nullable=False)
     role_id = db.Column(db.Integer, unique=True, nullable=False)
     messages_received = db.relationship('Message', foreign_keys='Message.user_id', backref='recipient', lazy='dynamic')
@@ -35,6 +38,20 @@ class User(UserMixin, db.Model):
     def new_messages(self):
         last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
         return Message.query.filter_by(recipient=self).filter(Message.time_stamp > last_read_time).count()
+
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return
+        return User.query.get(id)
 
 
 class Video(db.Model):

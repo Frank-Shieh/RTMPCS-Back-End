@@ -1,0 +1,10 @@
+Flask
+Flask-Login
+FLask-Migrate
+Flask-SQLAlchemy
+Flask-Script
+Flask-WTF
+Flask-mail
+pyjwt
+WTForms
+Werkzeug
