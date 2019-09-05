@@ -1,5 +1,7 @@
+from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor
-from flask import render_template, flash, redirect, url_for, request, send_from_directory
+from io import BytesIO
+from flask import render_template, flash, redirect, url_for, request, send_from_directory, send_file
 from flask_login import current_user, login_user, logout_user, login_required
 from .forms import ResetPasswordRequestForm
 from .email import send_password_reset_email
@@ -11,6 +13,7 @@ from .forms import LoginForm, RegistrationForm, ResetPasswordForm
 from .utils import run_detection
 import json
 import os
+import requests
 
 executor = ThreadPoolExecutor(2)
 
@@ -74,18 +77,23 @@ def register():
 @app.route('/upload', methods=['POST'])
 def upload():
     file = request.files['inputFile']
-    basePath = os.path.join(os.path.dirname(__file__), current_user.__getattr__('name'), 'source')
+    basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
     if not os.path.exists(basePath):
         os.makedirs(basePath)
+        os.chmod(basePath, mode=0o777)
     # 文件名尚未更改，多文件上传尚未实现
-    uploadPath = os.path.join(basePath, secure_filename(file.filename))
-    file.save(uploadPath)
-    uploadPath = str(uploadPath.replace("\\", "/"))
-    username = current_user.__getattr__('name')
-    # 异步处理
-    executor.submit(run_detection, 0.5, 0.5, uploadPath, username)
-    upload_status = 'saved'
-    return render_template('index.html', upload_status = upload_status)
+    uploadPath = os.path.join(basePath, secure_filename(os.path.splitext(file.filename)[0]+'-'+str(datetime.now().strftime("%Y/%m/%d-%H:%M:%S"))+os.path.splitext(file.filename)[1]))
+    if uploadPath.endswith(('.mp4', '.mkv', '.avi', '.wmv', '.iso')):
+        file.save(uploadPath)
+        uploadPath = str(uploadPath.replace("\\", "/"))
+        username = current_user.__getattr__('name')
+        # 异步处理
+        executor.submit(run_detection, 0.5, 0.5, uploadPath, file.filename, username)
+        upload_status = 'saved'
+        return render_template('index.html', upload_status = upload_status)
+    else:
+        upload_status = 'Error Format'
+        return render_template('index.html', upload_status=upload_status)
 
 
 @app.route('/retrieve_history', methods=['GET', 'POST'])
@@ -99,8 +107,9 @@ def retrieve_history():
 @app.route('/downloadVideo/<path:id>', methods=['GET', 'POST'])
 def downloadVideo(id):
     videoLocation = db.session.query(Video.location).filter_by(id=id).first()
-    videoLocation = os.path.normpath(videoLocation[0])
-    return send_from_directory(os.path.dirname(videoLocation), os.path.basename(videoLocation), as_attachment=True)
+    r = requests.get(videoLocation[0])
+    videoIO = BytesIO(r.content)
+    return send_file(videoIO, as_attachment=True, attachment_filename='result.mp4', mimetype='video/mp4')
 
 
 @app.route('/retrieve_notification', methods=['GET', 'POST'])

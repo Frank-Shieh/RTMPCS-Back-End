@@ -40,12 +40,12 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
     with tf.Session() as sess:
         saver.restore(sess, './video_detection/weights/model.ckpt')
 
-        win_name = 'Video detection'
-        cv2.namedWindow(win_name)
+        # win_name = 'Video detection'
+        # cv2.namedWindow(win_name)
         cap = cv2.VideoCapture(input_names)
         frame_size = (cap.get(cv2.CAP_PROP_FRAME_WIDTH),
                       cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        fourcc = cv2.VideoWriter_fourcc(*'X264')
+        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
         fps = cap.get(cv2.CAP_PROP_FPS)
         outputPath = os.path.join(outputDirPath, os.path.basename(input_names))
         outputPath = str(outputPath.replace("\\", "/"))
@@ -68,7 +68,7 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
                     people_number = draw_frame(frame, frame_size, detection_result,
                                class_names, _MODEL_SIZE, people_number)
 
-                    cv2.imshow(win_name, frame)
+                    # cv2.imshow(win_name, frame)
 
                     key = cv2.waitKey(1) & 0xFF
 

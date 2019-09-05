@@ -6,15 +6,18 @@ from .email import send_notification_email
 from datetime import datetime
 
 
-def run_detection(iou_threshold, confidence_threshold, source_address, username):
+def run_detection(iou_threshold, confidence_threshold, source_address, source_file_name, username):
     basePath = os.path.split(os.path.dirname(source_address))[0]
+
     outputDirPath = os.path.join(basePath, 'output')
     if not os.path.exists(outputDirPath):
         os.makedirs(outputDirPath)
+        os.chmod(outputDirPath, mode=0o777)
     # run yolo3 detection
     outputFilePath, people_number = yolo_detection(iou_threshold, confidence_threshold, source_address, outputDirPath)
-
-    newVideo = Video(location=outputFilePath, name=os.path.basename(outputFilePath))
+    # add IP server location
+    outputFilePath = 'http://45.113.233.87:8009'+outputFilePath[5:]
+    newVideo = Video(location=outputFilePath, name=source_file_name)
     db.session.add(newVideo)
     db.session.flush()
     # get video id
