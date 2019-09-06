@@ -2,16 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c525bd80-ce11-4d9a-8757-0e523050bcc0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/admin/output/test-012019_09_05-145446.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/application/admin/source/test-012019_09_05-145446.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/boot.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/output/test-01.mp4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/admin/source/test-01.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/templates/history.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/history.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/people-counter.py" beforeDir="false" afterPath="$PROJECT_DIR$/people_counter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirement.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/video_detection/detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_detection/detect.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -203,7 +202,8 @@
       <workItem from="1567222978956" duration="145000" />
       <workItem from="1567238607751" duration="2000" />
       <workItem from="1567396477492" duration="27898000" />
-      <workItem from="1567657247203" duration="13708000" />
+      <workItem from="1567657247203" duration="13868000" />
+      <workItem from="1567737508000" duration="8704000" />
     </task>
     <task id="LOCAL-00001" summary="version 0.1.0">
       <created>1566546365130</created>
@@ -247,7 +247,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567143946778</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="1.modify address 2. download from server">
+      <created>1567677843703</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1567677843703</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -304,12 +311,13 @@
     <MESSAGE value="1.combine yolo3 detection algorithm. 2. save output video and record the history into database" />
     <MESSAGE value="1. show user history 2. add notification function" />
     <MESSAGE value="1. show user history 2. add notification function&#10;3. add send email function 4. reset user password" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. show user history 2. add notification function&#10;3. add send email function 4. reset user password" />
+    <MESSAGE value="1.modify address 2. download from server" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.modify address 2. download from server" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/back_end_project$Flask__manage_py_.coverage" NAME="Flask (manage.py) Coverage Results" MODIFIED="1566454070685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/back_end_project$people_counter.coverage" NAME="people-counter Coverage Results" MODIFIED="1566883167596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/back_end_project$Flask.coverage" NAME="Flask (people_counter.py) Coverage Results" MODIFIED="1567479329118" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/back_end_project$Flask__people_counter_py_.coverage" NAME="Flask (people_counter.py) Coverage Results" MODIFIED="1567673521477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/back_end_project$Flask__people_counter_py_.coverage" NAME="Flask (people_counter.py) Coverage Results" MODIFIED="1567744638324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

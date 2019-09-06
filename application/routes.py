@@ -112,10 +112,28 @@ def downloadVideo(id):
     return send_file(videoIO, as_attachment=True, attachment_filename='result.mp4', mimetype='video/mp4')
 
 
+@app.route('/deleteVideo/<path:id>', methods=['GET', 'POST'])
+def deleteVideo(id):
+    history = History.query.filter_by(id=id).first()
+    history.status = 0
+    db.session.flush()
+    db.session.commit()
+    return redirect(url_for('retrieve_history'))
+
+
+
 @app.route('/retrieve_notification', methods=['GET', 'POST'])
 def retrieve_notification():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
-    notifications = Message.query.filter_by(user_id=user.id).all()
+    print(user.last_message_read_time)
+    if user.last_message_read_time is None:
+        notifications = Message.query.filter_by(user_id=user.id, ).all()
+    else:
+        notifications = Message.query.filter_by(user_id=user.id, )\
+            .filter(Message.time_stamp > user.last_message_read_time).all()
+    user.last_message_read_time = datetime.now()
+    db.session.flush()
+    db.session.commit()
     messages = {}
     counter = 0
     for msg in notifications:

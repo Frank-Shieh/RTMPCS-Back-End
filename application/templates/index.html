@@ -35,7 +35,7 @@
     </div>
     {# notification function   #}
 
-    <button id="btn" >
+    <button id="btn">
         Messages
         {% set new_messages = current_user.new_messages() %}
         <span id="message_count" class="badge" style="visibility:
@@ -49,25 +49,24 @@
     </button>
 
 
-    <p>数据展示：
-        <input type="text" id ="NAME">
-        <input type="text" id ="AGE"></p>
-    <p>
+    <ul id="list"></ul>
+
     <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
     <script>
-        $(function() {
+        $(function () {
             // body...
-            $("#btn").click(function(){
+            $("#btn").click(function () {
                 $.ajax({
-                url: "/retrieve_notification",
-                type: "POST",
-                dataType: "json",
-                success: function (data) {
-                // alert(data.name + ":" + data.age);
-                $("#NAME").val(data[0].id);
-                $("#AGE").val(data[0].content);
-                console.log(data)}
-
+                    url: "/retrieve_notification",
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        for(var o in data){
+                            var html = "<li data-id=" + data[o].id + ">" + data[o].content+"</li>"
+                            $("#list").append(html)
+                        }
+                        console.log(data)
+                    }
                 })
             })
         })

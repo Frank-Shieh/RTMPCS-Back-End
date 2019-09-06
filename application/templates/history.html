@@ -14,7 +14,7 @@
                 <td>{{history.Video.name}}</td>
                 <td>{{history.History.count}}</td>
                 <td><input type="button" onclick="location.href='{{ url_for('downloadVideo',id=history.Video.id) }}'"></td>
-                <td>delete</td>
+                <td><input type="button" onclick="location.href='{{ url_for('deleteVideo',id=history.History.id) }}'"></td>
             </tr>
         {% endfor %}
 

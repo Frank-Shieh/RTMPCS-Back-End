@@ -44,6 +44,19 @@ class User(UserMixin, db.Model):
             {'reset_password': self.id, 'exp': time() + expires_in},
             app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
+    def to_json(self):
+        json_data = {
+            'id': self.id,
+            'name': self.name,
+            'password': self.password,
+            'email' : self.email,
+            'status': self.status,
+            'role_id': self.role_id,
+            'messages_received': self.messages_received,
+            'last_message_read_time': self.last_message_read_time
+        }
+        return json_data
+
     @staticmethod
     def verify_reset_password_token(token):
         try:
@@ -59,6 +72,14 @@ class Video(db.Model):
     location = db.Column(db.String(200), nullable=False)
     name = db.Column(db.String(200), nullable=True)
 
+    def to_json(self):
+        json_data = {
+            'id': self.id,
+            'location': self.location,
+            'name': self.name
+        }
+        return json_data
+
 
 class History(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
@@ -67,6 +88,17 @@ class History(db.Model):
     video_id = db.Column(db.Integer, nullable=False)
     submit_time = db.Column(db.DATETIME, nullable=True)
     status = db.Column(db.Integer, nullable=False)
+
+    def to_json(self):
+        json_data = {
+            'id': self.id,
+            'user_id': self.user_id,
+            'count': self.count,
+            'video_id': self.video_id,
+            'submit_time': self.submit_time.strftime("%Y/%m/%d, %H:%M"),
+            'status': self.status
+        }
+        return json_data
 
 
 class Message(db.Model):
