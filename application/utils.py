@@ -1,5 +1,7 @@
+import threading
+
 from video_detection.detect import yolo_detection
-import os
+import os, sys
 from .models import Video, User, History, Message
 from . import app, db
 from .email import send_notification_email
@@ -35,5 +37,6 @@ def run_detection(iou_threshold, confidence_threshold, source_address, source_fi
     msg = Message(recipient=user, content=msg_content, time_stamp=datetime.now())
     db.session.add(msg)
     db.session.commit()
+    sys.exit()
 
 

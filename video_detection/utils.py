@@ -11,7 +11,7 @@ import dlib
 # instantiate our centroid tracker, then initialize a list to store
 # each of our dlib correlation trackers, followed by a dictionary to
 # map each unique object ID to a TrackableObject
-ct = CentroidTracker(maxDisappeared=40, maxDistance=50)
+
 trackers = []
 trackableObjects = {}
 
@@ -23,7 +23,7 @@ def load_class_names(file_name):
     return class_names
 
 
-def draw_frame(frame, frame_size, boxes_dicts, class_names, model_size, people_number):
+def draw_frame(frame, frame_size, boxes_dicts, class_names, model_size, people_number,ct):
     """Draws detected boxes in a video frame.
     Args:
         frame: A video frame.
@@ -109,5 +109,5 @@ def draw_frame(frame, frame_size, boxes_dicts, class_names, model_size, people_n
         cv2.putText(frame, text, (centroid[2], centroid[3] - baseline),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1)
 
-    return people_number
+    return people_number,ct
 

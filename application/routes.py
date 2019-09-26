@@ -1,5 +1,5 @@
 from datetime import datetime
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED
 from io import BytesIO
 from flask import render_template, flash, redirect, url_for, request, send_from_directory, send_file
 from flask_login import current_user, login_user, logout_user, login_required
@@ -14,8 +14,13 @@ from .utils import run_detection
 import json
 import os
 import requests
+import threading
 
-executor = ThreadPoolExecutor(2)
+
+executor = ThreadPoolExecutor(1)
+@app.route('/app/hello', methods=['GET', 'POST'])
+def app_hello():
+    return "Hello!!"
 
 @app.route('/')
 @app.route('/index')
@@ -77,7 +82,9 @@ def register():
 @app.route('/upload', methods=['POST'])
 def upload():
     file = request.files['inputFile']
-    basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
+    #basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
+    basePath = os.path.join(os.getcwd(), current_user.__getattr__('name'), 'source')
+
     if not os.path.exists(basePath):
         os.makedirs(basePath)
         os.chmod(basePath, mode=0o777)
@@ -88,7 +95,8 @@ def upload():
         uploadPath = str(uploadPath.replace("\\", "/"))
         username = current_user.__getattr__('name')
         # 异步处理
-        executor.submit(run_detection, 0.5, 0.5, uploadPath, file.filename, username)
+        threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, ), daemon=True).start()
+        # future = executor.submit(run_detection, 0.5, 0.5, uploadPath, file.filename, username)
         upload_status = 'saved'
         return render_template('index.html', upload_status = upload_status)
     else:

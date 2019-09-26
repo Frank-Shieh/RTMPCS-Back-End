@@ -11,10 +11,13 @@ Example:
 
 Note that only one video can be processed at one run.
 """
+import time
 
 import tensorflow as tf
 import cv2,os
+import numpy as np
 
+from video_detection.trackingModule.centroidtracker import CentroidTracker
 from .yolo_v3 import Yolo_v3
 from .utils import load_class_names, draw_frame
 
@@ -23,10 +26,10 @@ _CLASS_NAMES_FILE = './video_detection/coco.names'
 _MAX_OUTPUT_SIZE = 20
 
 
-def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPath):
+def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPath, people_number=0):
+    tf.reset_default_graph()
     class_names = load_class_names(_CLASS_NAMES_FILE)
     n_classes = len(class_names)
-
     model = Yolo_v3(n_classes=n_classes, model_size=_MODEL_SIZE,
                     max_output_size=_MAX_OUTPUT_SIZE,
                     iou_threshold=iou_threshold,
@@ -35,13 +38,12 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
     inputs = tf.placeholder(tf.float32, [1, *_MODEL_SIZE, 3])
     detections = model(inputs, training=False)
     saver = tf.train.Saver(tf.global_variables(scope='yolo_v3_model'))
-    people_number = 0
 
     with tf.Session() as sess:
         saver.restore(sess, './video_detection/weights/model.ckpt')
 
-        # win_name = 'Video detection'
-        # cv2.namedWindow(win_name)
+        win_name = 'Video detection'
+        cv2.namedWindow(win_name)
         cap = cv2.VideoCapture(input_names)
         frame_size = (cap.get(cv2.CAP_PROP_FRAME_WIDTH),
                       cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -53,8 +55,13 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
                               (int(frame_size[0]), int(frame_size[1])))
 
         try:
-            totalFrames = 0.
+            totalFrames = 0
+            ct = CentroidTracker(maxDisappeared=40, maxDistance=50)
             while True:
+                if hasattr(cv2, 'cv'):
+                    cap.set(cv2.cv.CAP_PROP_POS_FRAMES, totalFrames)
+                else:
+                    cap.set(cv2.CAP_PROP_POS_FRAMES, totalFrames)
                 ret, frame = cap.read()
                 if totalFrames % 2 == 0:
                     if not ret:
@@ -65,10 +72,10 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
                                                 feed_dict={inputs: [resized_frame]})
 
                     # print("detection_result", detection_result)
-                    people_number = draw_frame(frame, frame_size, detection_result,
-                               class_names, _MODEL_SIZE, people_number)
+                    people_number,ct = draw_frame(frame, frame_size, detection_result,
+                               class_names, _MODEL_SIZE, people_number,ct)
 
-                    # cv2.imshow(win_name, frame)
+                    cv2.imshow(win_name, frame)
 
                     key = cv2.waitKey(1) & 0xFF
 
@@ -78,7 +85,10 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
                     out.write(frame)
                 totalFrames = totalFrames + 1
         finally:
-            cv2.destroyAllWindows()
+            cv2.waitKey(10) & 0xFF
+            cv2.VideoCapture.release(cap)
             cap.release()
+            out.release()
+            cv2.destroyAllWindows()
             print('Detections have been saved successfully.')
     return outputPath, people_number
