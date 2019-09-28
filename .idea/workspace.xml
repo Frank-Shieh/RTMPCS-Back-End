@@ -2,15 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c525bd80-ce11-4d9a-8757-0e523050bcc0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/admin/output/test-01-2019_09_28-113718.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/output/test-01-2019_09_28-145152.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/output/test-01-2019_09_28-163122.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/source/test-01-2019_09_28-113718.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/source/test-01-2019_09_28-145152.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/admin/source/test-01-2019_09_28-163122.mp4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/templates/account.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/account.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/templates/history.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/history.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/register.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/reset_password.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/reset_password_request.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/templates/reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/reset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/upload.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -214,7 +218,7 @@
       <workItem from="1569404205655" duration="1694000" />
       <workItem from="1569457536456" duration="2059000" />
       <workItem from="1569579327526" duration="615000" />
-      <workItem from="1569632246898" duration="15786000" />
+      <workItem from="1569632246898" duration="20964000" />
     </task>
     <task id="LOCAL-00001" summary="version 0.1.0">
       <created>1566546365130</created>
@@ -279,7 +283,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569458383097</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="combination">
+      <created>1569652947581</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1569652947581</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -339,7 +350,8 @@
     <MESSAGE value="1.modify address 2. download from server" />
     <MESSAGE value="1.update message function 2. complete delete history function 3. Add json parser" />
     <MESSAGE value="fix the detection bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix the detection bug" />
+    <MESSAGE value="combination" />
+    <option name="LAST_COMMIT_MESSAGE" value="combination" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

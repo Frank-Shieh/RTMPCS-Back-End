@@ -142,7 +142,6 @@ def deleteVideo(id):
 @app.route('/retrieve_notification', methods=['GET', 'POST'])
 def retrieve_notification():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
-    print(user.last_message_read_time)
     if user.last_message_read_time is None:
         notifications = Message.query.filter_by(user_id=user.id, ).all()
     else:
@@ -156,6 +155,15 @@ def retrieve_notification():
     for msg in notifications:
         messages[counter] = msg.to_json()
         counter = counter + 1
+    return json.dumps(messages)
+
+
+@app.route('/refresh_notification', methods=['GET', 'POST'])
+def refresh_notification():
+    user = User.query.filter_by(name=current_user.__getattr__('name')).first()
+    messages = {}
+    counter = user.new_messages()
+    messages[0] = counter
     return json.dumps(messages)
 
 
