@@ -20,96 +20,106 @@ import threading
 executor = ThreadPoolExecutor(1)
 @app.route('/app/hello', methods=['GET', 'POST'])
 def app_hello():
-    return "Hello!!"
-
-@app.route('/')
-@app.route('/index')
-@login_required
-def index():
-    user = {'username': 'Miguel'}
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-    return render_template("index.html", title='Home Page', posts=posts)
+    if current_user.is_authenticated:
+        return "Hello!!"
+    else:
+        return "No hello!"
 
 
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(name=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username or password')
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        user_info = request.form.to_dict()
+        user = User.query.filter_by(name=user_info.get("username")).first()
+        if user is None or not user.check_password(user_info.get("password")):
+            flash('Invalid username of password')
             return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
+        login_user(user)
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
-        return redirect(url_for('index'))
-    return render_template('login.html', title='Sign In', form=form)
+            next_pate = url_for('home')
+        return redirect(url_for('home'))
+    return render_template('signin.html', title='Sign In')
+
+@login_required
+@app.route('/index', methods=['GET', 'POST'])
+def home():
+    return render_template('home.html', title='home')
+
+
+@app.route('/account', methods=['GET', 'POST'])
+def account():
+    user = User.query.filter_by(name=current_user.__getattr__('name')).first()
+    return render_template('account.html', user=user)
 
 
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(name=form.username.data, email=form.email.data, status=1, role_id=1)
-        user.set_password(form.password.data)
+        return redirect(url_for('home'))
+    if request.method == "POST":
+        user_info = request.form.to_dict()
+        check_user = User.query.filter_by(name=user_info.get("username")).first()
+        email = User.query.filter_by(email = user_info.get("email")).first()
+        if check_user is not None:
+            flash("Username has existed")
+            return redirect(url_for("register"))
+        if user_info.get("password") != user_info.get("rpassword"):
+            flash("Passwords are different")
+            return redirect(url_for("register"))
+        if email is not None:
+            flash("Email has registered")
+            return redirect(url_for("register"))
+        # user = User(name=form.username.data, email=form.email.data, status=1, role_id=1)
+        user = User(name=user_info.get("username"), email=user_info.get("email"), status=1, role_id=1)
+        user.set_password(user_info.get("password"))
+        check_user = User.query.filter_by(name=user_info.get("username")).first()
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('signup.html', title='signup')
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET','POST'])
 def upload():
-    file = request.files['inputFile']
-    #basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
-    basePath = os.path.join(os.getcwd(), current_user.__getattr__('name'), 'source')
-
-    if not os.path.exists(basePath):
-        os.makedirs(basePath)
-        os.chmod(basePath, mode=0o777)
-    # 文件名尚未更改，多文件上传尚未实现
-    uploadPath = os.path.join(basePath, secure_filename(os.path.splitext(file.filename)[0]+'-'+str(datetime.now().strftime("%Y/%m/%d-%H:%M:%S"))+os.path.splitext(file.filename)[1]))
-    if uploadPath.endswith(('.mp4', '.mkv', '.avi', '.wmv', '.iso')):
-        file.save(uploadPath)
-        uploadPath = str(uploadPath.replace("\\", "/"))
-        username = current_user.__getattr__('name')
-        # 异步处理
-        threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, ), daemon=True).start()
-        # future = executor.submit(run_detection, 0.5, 0.5, uploadPath, file.filename, username)
-        upload_status = 'saved'
-        return render_template('index.html', upload_status = upload_status)
+    if request.method == "GET":
+        return render_template('upload.html', title='Upload File')
     else:
-        upload_status = 'Error Format'
-        return render_template('index.html', upload_status=upload_status)
+        file = request.files['file']
+        #basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
+        basePath = os.path.join(os.getcwd(), current_user.__getattr__('name'), 'source')
+        if not os.path.exists(basePath):
+            os.makedirs(basePath)
+            os.chmod(basePath, mode=0o777)
+        # 文件名尚未更改，多文件上传尚未实现
+        uploadPath = os.path.join(basePath, secure_filename(os.path.splitext(file.filename)[0]+'-'+str(datetime.now().strftime("%Y/%m/%d-%H:%M:%S"))+os.path.splitext(file.filename)[1]))
+        if uploadPath.endswith(('.mp4', '.mkv', '.avi', '.wmv', '.iso')):
+            file.save(uploadPath)
+            uploadPath = str(uploadPath.replace("\\", "/"))
+            username = current_user.__getattr__('name')
+            # 异步处理
+            threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, ), daemon=True).start()
+            # future = executor.submit(run_detection, 0.5, 0.5, uploadPath, file.filename, username)
+            flash('File upload successfully')
+        else:
+            flash('Error file format')
+        return redirect(url_for('upload'))
 
-
-@app.route('/retrieve_history', methods=['GET', 'POST'])
-def retrieve_history():
+@app.route('/history',methods=['GET', 'POST'])
+def history():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
     histories = db.session.query(History, Video).filter(History.video_id == Video.id).filter_by(user_id=user.id, status=1).all()
-    # histories = History.query.filter_by(user_id=user.id, status = 1).all()
-    return render_template('history.html', histories=histories)
+    return render_template('history.html',histories=histories)
 
 
 @app.route('/downloadVideo/<path:id>', methods=['GET', 'POST'])
@@ -127,7 +137,6 @@ def deleteVideo(id):
     db.session.flush()
     db.session.commit()
     return redirect(url_for('retrieve_history'))
-
 
 
 @app.route('/retrieve_notification', methods=['GET', 'POST'])
@@ -150,6 +159,22 @@ def retrieve_notification():
     return json.dumps(messages)
 
 
+@app.route('/forget', methods=['GET', 'POST'])
+def forget():
+    if request.method == "POST":
+        email_info = request.form.to_dict()
+        user = User.query.filter_by(email=email_info.get("email")).first()
+        if user:
+            send_password_reset_email(user)
+            flash('Check your email for the instructions to reset your password')
+            return render_template('signin.html', title='Sign In')
+        else:
+            flash('Please input a valid Email')
+            return render_template('forget.html', title='Forget Password')
+    else:
+        return render_template('forget.html', title='Forget Password')
+
+
 @app.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
     if current_user.is_authenticated:
@@ -167,15 +192,31 @@ def reset_password_request():
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
     user = User.verify_reset_password_token(token)
     if not user:
-        return redirect(url_for('index'))
-    form = ResetPasswordForm()
-    if form.validate_on_submit():
-        user.set_password(form.password.data)
-        db.session.commit()
-        flash('Your password has been reset.')
+        flash('Error URL')
         return redirect(url_for('login'))
-    return render_template('reset_password.html', form=form)
+    if request.method == "POST":
+        user_info = request.form.to_dict()
+        if user_info.get("password") == user_info.get("rpassword"):
+            user.set_password(user_info.get("password"))
+            db.session.commit()
+            flash('Your password has been reset.')
+            return redirect(url_for('login'))
+        else:
+            flash('Passwords are different')
+    return render_template('resetpassword.html', title="Reset Password")
+
+
+@app.route('/reset',methods=['GET','POST'])
+def reset():
+    user = User.query.filter_by(name=current_user.__getattr__('name')).first()
+    if request.method == "POST":
+        user_info = request.form.to_dict()
+        if user_info.get("password") == user_info.get("rpassword"):
+            user.set_password(user_info.get("password"))
+            db.session.commit()
+            return render_template('account.html', user=user)
+        else:
+            flash('Passwords are different')
+    return render_template('reset.html', user=user)

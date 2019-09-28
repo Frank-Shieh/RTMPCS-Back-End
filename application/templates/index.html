@@ -30,23 +30,23 @@
         </form>
     </div>
     {# retrieve_history function   #}
-    <div>
-        <a href="{{ url_for('retrieve_history') }}">checkHistory</a>
-    </div>
+{#    <div>#}
+{#        <a href="{{ url_for('retrieve_history') }}">checkHistory</a>#}
+{#    </div>#}
     {# notification function   #}
 
-    <button id="btn">
-        Messages
-        {% set new_messages = current_user.new_messages() %}
-        <span id="message_count" class="badge" style="visibility:
-                {% if new_messages %}
-                    visible
-                {% else %}
-                    hidden
-                {% endif %};">
-            {{ new_messages }}
-        </span>
-    </button>
+{#    <button id="btn">#}
+{#        Messages#}
+{#        {% set new_messages = current_user.new_messages() %}#}
+{#        <span id="message_count" class="badge" style="visibility:#}
+{#                {% if new_messages %}#}
+{#                    visible#}
+{#                {% else %}#}
+{#                    hidden#}
+{#                {% endif %};">#}
+{#            {{ new_messages }}#}
+{#        </span>#}
+{#    </button>#}
 
 
     <ul id="list"></ul>

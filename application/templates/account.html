@@ -1,29 +1,22 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>upload</title>
+    <title>account</title>
 
     <!-- Bootstrap core CSS -->
     <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/vendor/bootstrap/css/jquery.dataTables.min.css" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
     <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet">
     <link href="static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet">
-
 
     <!-- Custom styles for this template -->
     <link href="static/css/resume.min.css" rel="stylesheet">
@@ -36,19 +29,21 @@
     <style type="text/css">
         .form {
             background: rgba(255, 255, 255, 0.8);
-            width: 800px;
-            margin: 50px auto;
+            width: 300px;
+            margin: 250px auto;
+        }
+
+        input[type="text"], input[type="password"] {
+            padding-left: 26px;
+        }
+
+        p {
+            font-size: 20px;
         }
     </style>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#example').DataTable();
-        });
-    </script>
 </head>
 
-<body id="page-top">
-
+<body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
     <a class="navbar-brand js-scroll-trigger" href="#page-top">
         <span class="d-block d-lg-none">MPCS</span>
@@ -71,37 +66,26 @@
     </div>
 </nav>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#example').DataTable();
-    });
-</script>
 <div class="container">
     <div class="form row">
-        <table id="example" class="table table-striped table-bordered" style="width:110%">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Count</th>
-                <th>Download</th>
-                <th>Delete</th>
-            </tr>
-            </thead>
-            {% for history in histories %}
-                <tr>
-                    <td>{{ history.History.submit_time }}</td>
-                    <td>{{ history.Video.name }}</td>
-                    <td>{{ history.History.count }}</td>
-                    <td><input type="button"
-                               onclick="location.href='{{ url_for('downloadVideo',id=history.Video.id) }}'"></td>
-                    <td><input type="button"
-                               onclick="location.href='{{ url_for('deleteVideo',id=history.History.id) }}'"></td>
-                </tr>
-            {% endfor %}
-        </table>
+        <form action="" method="post" enctype="multipart/form-data">
+            <h3 class="form-title">Account Information</h3>
+
+            <p></p>
+            <p>Account name: {{ user.name }}</p>
+            <p></p>
+            <p>Email: {{ user.email }}</p>
+
+            <div class="col-sm-15 col-md-15">
+                <hr/>
+                {#                <input type='button' name="logout" class="btn btn-success pull-right" value='LogOut' onclick="window.location.href='{{ url_for('logout') }}'" />#}
+                <input type='button' name="reset" class="btn btn-success pull-right" value="ResetPassword"
+                       onclick="window.location.href='{{ url_for('reset') }}'"/>
+            </div>
+        </form>
     </div>
 </div>
+
 <!-- Bootstrap core JavaScript -->
 <script src="static/vendor/jquery/jquery.min.js"></script>
 <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -112,9 +96,6 @@
 <!-- Custom scripts for this template -->
 <script src="static/js/resume.min.js"></script>
 
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 </body>
 
 </html>
