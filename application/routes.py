@@ -35,7 +35,7 @@ def login():
         user_info = request.form.to_dict()
         user = User.query.filter_by(name=user_info.get("username")).first()
         if user is None or not user.check_password(user_info.get("password")):
-            flash('Invalid username of password')
+            flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user)
         next_page = request.args.get('next')

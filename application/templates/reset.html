@@ -72,7 +72,7 @@
                 <a class="nav-link js-scroll-trigger" href="{{ url_for('history') }}">Upload History</a>
             </li>
             <li class="nav-item">
-                <a id="message" class="nav-link js-scroll-trigger" href="{{ url_for('history') }}">Messages</a>
+                <a id="message" class="nav-link js-scroll-trigger">Messages</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link js-scroll-trigger" href="{{ url_for('logout') }}">Log Out</a>
@@ -114,8 +114,72 @@
         </form>
     </div>
 </div>
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Messages</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="message-body">
+
+            </div>
+
+        </div>
+    </div>
+</div>
 <script type="text/javascript" src="js/main.js"></script>
 <script src="static/js/refresh.js"></script>
+<script>
+    // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("message");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        $.ajax({
+            url: "/retrieve_notification",
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                var body = document.getElementById("message-body");
+                if (body.hasChildNodes()) {
+                    body.removeChild(body.childNodes[0]);
+                }
+                var ul = document.createElement("ul");
+                ul.setAttribute("id", "list")
+                for (var o in data) {
+                    var node = document.createElement("LI");
+                    var textnode = document.createTextNode(data[o].content);
+                    node.appendChild(textnode);
+                    ul.appendChild(node);
+                }
+                body.appendChild(ul);
+                modal.style.display = "block";
+            }
+        })
+    };
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+</script>
 </body>
 
 </html>

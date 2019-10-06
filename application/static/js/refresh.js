@@ -12,6 +12,7 @@
                         if (message.hasChildNodes()) {
                             message.removeChild(message.childNodes[0]);
                         }
+
                         message.innerHTML = "Messages  " + "<span class=\"badge badge-pill badge-danger\">" + data[0] + "</span>"
                     }
 
