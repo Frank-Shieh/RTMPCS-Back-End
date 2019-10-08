@@ -29,8 +29,10 @@ def app_hello():
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    # user is already login
     if current_user.is_authenticated:
         return redirect(url_for("home"))
+    # user login and verify user information
     if request.method == "POST":
         user_info = request.form.to_dict()
         user = User.query.filter_by(name=user_info.get("username")).first()
@@ -67,6 +69,7 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     if request.method == "POST":
+        # verify request form data
         user_info = request.form.to_dict()
         check_user = User.query.filter_by(name=user_info.get("username")).first()
         email = User.query.filter_by(email = user_info.get("email")).first()
@@ -79,10 +82,9 @@ def register():
         if email is not None:
             flash("Email has registered")
             return redirect(url_for("register"))
-        # user = User(name=form.username.data, email=form.email.data, status=1, role_id=1)
         user = User(name=user_info.get("username"), email=user_info.get("email"), status=1, role_id=1)
+        # update user password
         user.set_password(user_info.get("password"))
-        check_user = User.query.filter_by(name=user_info.get("username")).first()
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
@@ -101,15 +103,14 @@ def upload():
         if not os.path.exists(basePath):
             os.makedirs(basePath)
             os.chmod(basePath, mode=0o777)
-        # 文件名尚未更改，多文件上传尚未实现
         uploadPath = os.path.join(basePath, secure_filename(os.path.splitext(file.filename)[0]+'-'+str(datetime.now().strftime("%Y/%m/%d-%H:%M:%S"))+os.path.splitext(file.filename)[1]))
+        # check file type
         if uploadPath.endswith(('.mp4', '.mkv', '.avi', '.wmv', '.iso')):
             file.save(uploadPath)
             uploadPath = str(uploadPath.replace("\\", "/"))
             username = current_user.__getattr__('name')
-            # 异步处理
+            # asynchronous process
             threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, ), daemon=True).start()
-            # future = executor.submit(run_detection, 0.5, 0.5, uploadPath, file.filename, username)
             flash('File upload successfully')
         else:
             flash('Error file format')
@@ -124,6 +125,7 @@ def history():
 
 @app.route('/downloadVideo/<path:id>', methods=['GET', 'POST'])
 def downloadVideo(id):
+    # get the location of video and download
     videoLocation = db.session.query(Video.location).filter_by(id=id).first()
     r = requests.get(videoLocation[0])
     videoIO = BytesIO(r.content)
@@ -132,26 +134,30 @@ def downloadVideo(id):
 
 @app.route('/deleteVideo/<path:id>', methods=['GET', 'POST'])
 def deleteVideo(id):
+    # delete corresponding history of video
     history = History.query.filter_by(id=id).first()
     history.status = 0
     db.session.flush()
     db.session.commit()
-    return redirect(url_for('retrieve_history'))
+    return redirect(url_for('history'))
 
 
 @app.route('/retrieve_notification', methods=['GET', 'POST'])
 def retrieve_notification():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
+    # judge the time of last reading of user
     if user.last_message_read_time is None:
         notifications = Message.query.filter_by(user_id=user.id, ).all()
     else:
         notifications = Message.query.filter_by(user_id=user.id, )\
             .filter(Message.time_stamp > user.last_message_read_time).all()
+    # update last reading time
     user.last_message_read_time = datetime.now()
     db.session.flush()
     db.session.commit()
     messages = {}
     counter = 0
+    # packing the information into json format
     for msg in notifications:
         messages[counter] = msg.to_json()
         counter = counter + 1
@@ -160,6 +166,7 @@ def retrieve_notification():
 
 @app.route('/refresh_notification', methods=['GET', 'POST'])
 def refresh_notification():
+    # count the unread message number
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
     messages = {}
     counter = user.new_messages()
@@ -169,6 +176,7 @@ def refresh_notification():
 
 @app.route('/forget', methods=['GET', 'POST'])
 def forget():
+    # forget password page operation
     if request.method == "POST":
         email_info = request.form.to_dict()
         user = User.query.filter_by(email=email_info.get("email")).first()
@@ -191,6 +199,7 @@ def reset_password_request():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
+            # send an email to user and provide a link to reset password
             send_password_reset_email(user)
         flash('Check your email for the instructions to reset your password')
         return redirect(url_for('login'))
@@ -200,6 +209,8 @@ def reset_password_request():
 
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
+    # reset password before the user login
+    # verify the token
     user = User.verify_reset_password_token(token)
     if not user:
         flash('Error URL')
@@ -218,6 +229,7 @@ def reset_password(token):
 
 @app.route('/reset',methods=['GET','POST'])
 def reset():
+    # reset password after the user login
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
     if request.method == "POST":
         user_info = request.form.to_dict()

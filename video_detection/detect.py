@@ -14,6 +14,7 @@ Note that only one video can be processed at one run.
 import time
 
 import tensorflow as tf
+from tensorflow.python.framework import ops
 import cv2,os
 import numpy as np
 
@@ -41,9 +42,8 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
 
     with tf.Session() as sess:
         saver.restore(sess, './video_detection/weights/model.ckpt')
-
-        win_name = 'Video detection'
-        cv2.namedWindow(win_name)
+        # win_name = 'Video detection'
+        # cv2.namedWindow(win_name)
         cap = cv2.VideoCapture(input_names)
         frame_size = (cap.get(cv2.CAP_PROP_FRAME_WIDTH),
                       cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -70,12 +70,11 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
                                                interpolation=cv2.INTER_NEAREST)
                     detection_result = sess.run(detections,
                                                 feed_dict={inputs: [resized_frame]})
-
-                    # print("detection_result", detection_result)
+                    # record the number of people according to the detection_result
                     people_number,ct = draw_frame(frame, frame_size, detection_result,
                                class_names, _MODEL_SIZE, people_number,ct)
 
-                    cv2.imshow(win_name, frame)
+                    # cv2.imshow(win_name, frame)
 
                     key = cv2.waitKey(1) & 0xFF
 
@@ -83,12 +82,15 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
                         break
 
                     out.write(frame)
+
                 totalFrames = totalFrames + 1
         finally:
             cv2.waitKey(10) & 0xFF
             cv2.VideoCapture.release(cap)
             cap.release()
+
             out.release()
-            cv2.destroyAllWindows()
+
+            # cv2.destroyAllWindows()
             print('Detections have been saved successfully.')
     return outputPath, people_number

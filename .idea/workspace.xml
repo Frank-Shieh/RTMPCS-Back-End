@@ -2,20 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c525bd80-ce11-4d9a-8757-0e523050bcc0" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/admin/output/test-01-2019_09_28-113718.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/output/test-01-2019_09_28-145152.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/output/test-01-2019_09_28-163122.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/source/test-01-2019_09_28-113718.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/source/test-01-2019_09_28-145152.mp4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin/source/test-01-2019_09_28-163122.mp4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/static/js/refresh.js" beforeDir="false" afterPath="$PROJECT_DIR$/application/static/js/refresh.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/account.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/account.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/history.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/history.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/reset.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/upload.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boot.sh" beforeDir="false" afterPath="$PROJECT_DIR$/boot.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/video_detection/detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_detection/detect.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -224,6 +217,10 @@
       <workItem from="1569979041300" duration="2327000" />
       <workItem from="1570065990752" duration="1344000" />
       <workItem from="1570237887100" duration="7735000" />
+      <workItem from="1570366302643" duration="73000" />
+      <workItem from="1570412199888" duration="8880000" />
+      <workItem from="1570493093158" duration="9772000" />
+      <workItem from="1570530270299" duration="555000" />
     </task>
     <task id="LOCAL-00001" summary="version 0.1.0">
       <created>1566546365130</created>
@@ -309,7 +306,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569658123176</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="add pop up window of message">
+      <created>1570366358889</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1570366358889</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -371,12 +375,13 @@
     <MESSAGE value="fix the detection bug" />
     <MESSAGE value="combination" />
     <MESSAGE value="refresh notification" />
-    <option name="LAST_COMMIT_MESSAGE" value="refresh notification" />
+    <MESSAGE value="add pop up window of message" />
+    <option name="LAST_COMMIT_MESSAGE" value="add pop up window of message" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/back_end_project$Flask__manage_py_.coverage" NAME="Flask (manage.py) Coverage Results" MODIFIED="1566454070685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/back_end_project$people_counter.coverage" NAME="people-counter Coverage Results" MODIFIED="1566883167596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/back_end_project$Flask.coverage" NAME="Flask (people_counter.py) Coverage Results" MODIFIED="1567479329118" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/back_end_project$Flask__people_counter_py_.coverage" NAME="Flask (people_counter.py) Coverage Results" MODIFIED="1570248136091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/back_end_project$Flask__people_counter_py_.coverage" NAME="Flask (people_counter.py) Coverage Results" MODIFIED="1570515383994" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

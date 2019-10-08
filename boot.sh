@@ -1,4 +1,2 @@
 #!/bin/bash
-source  venv/bin/activate
-flask db upgrade
-flask run
+exec gunicorn -b :5000 --access-logfile - --error-logfile - people_counter:app

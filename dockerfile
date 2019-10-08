@@ -23,7 +23,7 @@ WORKDIR /project/back_end_project
 
 COPY requirements.txt requirements.txt
 
-RUN pip  install -U tensorflow
+RUN pip  install -U tensorflow==1.4.0
 RUN pip  install cmake
 RUN pip  install distro
 RUN pip  install dlib
@@ -36,11 +36,13 @@ COPY video_detection video_detection
 COPY people_counter.py config.py boot.sh ./
 RUN chmod +x boot.sh
 
-ENV LANG C.UTF-8
 ENV FLASK_APP people_counter.py
-ENV LC_ALL C.UTF-8
+
 RUN chown -R people_counter:people_counter ./
 USER people_counter
+
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
 
 EXPOSE 5000
 EXPOSE 8009
