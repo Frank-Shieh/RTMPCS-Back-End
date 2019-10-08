@@ -1,7 +1,7 @@
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED, FIRST_COMPLETED
 from io import BytesIO
-from flask import render_template, flash, redirect, url_for, request, send_from_directory, send_file
+from flask import render_template, flash, redirect, url_for, request, send_from_directory, send_file, jsonify
 from flask_login import current_user, login_user, logout_user, login_required
 from .forms import ResetPasswordRequestForm
 from .email import send_password_reset_email
@@ -141,7 +141,7 @@ def register():
         check_user = User.query.filter_by(name=user_info.get("username")).first()
         db.session.add(user)
         db.session.commit()
-        return return jsonify({'code': 0, 'errmsg': "Congratulations, you are now a registered user"})
+        return jsonify({'code': 0, 'errmsg': "Congratulations, you are now a registered user"})
     return jsonify({'code': -1, 'errmsg': "Sign Up Failed! Unknown Exception!"})
 
 @app.route('/upload', methods=['GET','POST'])
@@ -171,19 +171,16 @@ def upload():
 # Android Application API
 @app.route('/app/upload', methods=['POST'])
 def upload():
-    file = request.files['file']
-        #basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
-        basePath = os.path.join(os.getcwd(), current_user.__getattr__('name'), 'source')
+        file = request.files['file']
+        basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
         if not os.path.exists(basePath):
             os.makedirs(basePath)
             os.chmod(basePath, mode=0o777)
-        # 文件名尚未更改，多文件上传尚未实现
         uploadPath = os.path.join(basePath, secure_filename(os.path.splitext(file.filename)[0]+'-'+str(datetime.now().strftime("%Y/%m/%d-%H:%M:%S"))+os.path.splitext(file.filename)[1]))
         if uploadPath.endswith(('.mp4', '.mkv', '.avi', '.wmv', '.iso')):
             file.save(uploadPath)
             uploadPath = str(uploadPath.replace("\\", "/"))
             username = current_user.__getattr__('name')
-            # 异步处理
             threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, ), daemon=True).start()
             # future = executor.submit(run_detection, 0.5, 0.5, uploadPath, file.filename, username)
             return jsonify({'code': 0, 'errmsg': "Upload Success!"})

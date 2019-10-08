@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c525bd80-ce11-4d9a-8757-0e523050bcc0" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boot.sh" beforeDir="false" afterPath="$PROJECT_DIR$/boot.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/video_detection/detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_detection/detect.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -220,7 +214,7 @@
       <workItem from="1570366302643" duration="73000" />
       <workItem from="1570412199888" duration="8880000" />
       <workItem from="1570493093158" duration="9772000" />
-      <workItem from="1570530270299" duration="555000" />
+      <workItem from="1570530270299" duration="1105000" />
     </task>
     <task id="LOCAL-00001" summary="version 0.1.0">
       <created>1566546365130</created>
@@ -313,7 +307,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570366358889</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="update all comment">
+      <created>1570531053845</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1570531053845</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -376,7 +377,8 @@
     <MESSAGE value="combination" />
     <MESSAGE value="refresh notification" />
     <MESSAGE value="add pop up window of message" />
-    <option name="LAST_COMMIT_MESSAGE" value="add pop up window of message" />
+    <MESSAGE value="update all comment" />
+    <option name="LAST_COMMIT_MESSAGE" value="update all comment" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/back_end_project$Flask__manage_py_.coverage" NAME="Flask (manage.py) Coverage Results" MODIFIED="1566454070685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
