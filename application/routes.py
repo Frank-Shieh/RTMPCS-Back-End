@@ -16,7 +16,12 @@ import os
 import requests
 import threading
 
+#Information about response code FOR Android
+#Code: 0     Execution Success!
+#Code:-1     Execution Failed!
 
+
+#Android Application API
 executor = ThreadPoolExecutor(1)
 @app.route('/app/hello', methods=['GET', 'POST'])
 def app_hello():
@@ -46,6 +51,20 @@ def login():
         return redirect(url_for('home'))
     return render_template('signin.html', title='Sign In')
 
+#Android Application API
+@app.route('/app/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
+    if request.method == "POST":
+        user_info = request.form.to_dict()
+        user = User.query.filter_by(name=user_info.get("username")).first()
+        if user is None or not user.check_password(user_info.get("password")):
+            return jsonify({'code': -1, 'errmsg': "Invalid username or password"})
+        login_user(user)
+        return jsonify({'code': 0, 'errmsg': "Login Success!"})
+    return jsonify({'code': -1, 'errmsg': "Login Failed!"})
+
 @login_required
 @app.route('/index', methods=['GET', 'POST'])
 def home():
@@ -57,8 +76,20 @@ def account():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
     return render_template('account.html', user=user)
 
+#Android Application API
+@app.route('/app/account', methods=['GET', 'POST'])
+def account():
+    user = User.query.filter_by(name=current_user.__getattr__('name')).first()
+    return jsonify({'code': 0, 'user': user})
+
 
 @app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+#Android Application API
+@app.route('/app/logout')
 def logout():
     logout_user()
     return redirect(url_for('login'))
@@ -91,6 +122,27 @@ def register():
         return redirect(url_for('login'))
     return render_template('signup.html', title='signup')
 
+#Android Application API
+@app.route('/app/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    if request.method == "POST":
+        user_info = request.form.to_dict()
+        check_user = User.query.filter_by(name=user_info.get("username")).first()
+        email = User.query.filter_by(email = user_info.get("email")).first()
+        if check_user is not None:
+            return jsonify({'code': -1, 'errmsg': "Username has existed"})
+        if email is not None:
+            return jsonify({'code': -1, 'errmsg': "Email has registered"})
+        # user = User(name=form.username.data, email=form.email.data, status=1, role_id=1)
+        user = User(name=user_info.get("username"), email=user_info.get("email"), status=1, role_id=1)
+        user.set_password(user_info.get("password"))
+        check_user = User.query.filter_by(name=user_info.get("username")).first()
+        db.session.add(user)
+        db.session.commit()
+        return return jsonify({'code': 0, 'errmsg': "Congratulations, you are now a registered user"})
+    return jsonify({'code': -1, 'errmsg': "Sign Up Failed! Unknown Exception!"})
 
 @app.route('/upload', methods=['GET','POST'])
 def upload():
@@ -116,12 +168,41 @@ def upload():
             flash('Error file format')
         return redirect(url_for('upload'))
 
+# Android Application API
+@app.route('/app/upload', methods=['POST'])
+def upload():
+    file = request.files['file']
+        #basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
+        basePath = os.path.join(os.getcwd(), current_user.__getattr__('name'), 'source')
+        if not os.path.exists(basePath):
+            os.makedirs(basePath)
+            os.chmod(basePath, mode=0o777)
+        # 文件名尚未更改，多文件上传尚未实现
+        uploadPath = os.path.join(basePath, secure_filename(os.path.splitext(file.filename)[0]+'-'+str(datetime.now().strftime("%Y/%m/%d-%H:%M:%S"))+os.path.splitext(file.filename)[1]))
+        if uploadPath.endswith(('.mp4', '.mkv', '.avi', '.wmv', '.iso')):
+            file.save(uploadPath)
+            uploadPath = str(uploadPath.replace("\\", "/"))
+            username = current_user.__getattr__('name')
+            # 异步处理
+            threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, ), daemon=True).start()
+            # future = executor.submit(run_detection, 0.5, 0.5, uploadPath, file.filename, username)
+            return jsonify({'code': 0, 'errmsg': "Upload Success!"})
+        else:
+            return jsonify({'code': -1, 'errmsg': "Upload Failed!"})
+        
+
 @app.route('/history',methods=['GET', 'POST'])
 def history():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
     histories = db.session.query(History, Video).filter(History.video_id == Video.id).filter_by(user_id=user.id, status=1).all()
     return render_template('history.html',histories=histories)
 
+# Android Application API
+@app.route('/app/history',methods=['GET', 'POST'])
+def history():
+    user = User.query.filter_by(name=current_user.__getattr__('name')).first()
+    histories = db.session.query(History, Video).filter(History.video_id == Video.id).filter_by(user_id=user.id, status=1).all()
+    return jsonify({'code': 0, 'histories': histories})
 
 @app.route('/downloadVideo/<path:id>', methods=['GET', 'POST'])
 def downloadVideo(id):
@@ -189,6 +270,20 @@ def forget():
             return render_template('forget.html', title='Forget Password')
     else:
         return render_template('forget.html', title='Forget Password')
+
+# Android Application API
+@app.route('/app/forget', methods=['GET', 'POST'])
+def forget():
+    if request.method == "POST":
+        email_info = request.form.to_dict()
+        user = User.query.filter_by(email=email_info.get("email")).first()
+        if user:
+            send_password_reset_email(user)
+            return jsonify({'code': 0, 'errmsg': "Check your email for the instructions to reset your password"})
+        else:
+            return jsonify({'code': -1, 'errmsg': "Please input a valid Email"})
+    else:
+        return jsonify({'code': -1, 'errmsg': "Send Forget Request Failed!"})
 
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])
