@@ -90,7 +90,7 @@ def logout():
 @app.route('/app/logout')
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return jsonify({'code': 0, 'errmsg': "Login out Success!!"})
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -201,7 +201,7 @@ def history():
 def history():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
     histories = db.session.query(History, Video).filter(History.video_id == Video.id).filter_by(user_id=user.id, status=1).all()
-    return jsonify({'code': 0, 'histories': histories})
+    return jsonify({'code': 0, 'histories': histories.to_json()})
 
 @app.route('/downloadVideo/<path:id>', methods=['GET', 'POST'])
 def downloadVideo(id):
