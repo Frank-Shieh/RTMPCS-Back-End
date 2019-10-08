@@ -78,7 +78,7 @@ def account():
 @app.route('/app/account', methods=['GET', 'POST'])
 def account():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
-    return jsonify({'code': 0, 'user': user})
+    return jsonify({'code': 0, 'user': user.to_json()})
 
 
 @app.route('/logout')
