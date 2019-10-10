@@ -53,7 +53,7 @@ def login():
 
 #Android Application API
 @app.route('/app/login', methods=['GET', 'POST'])
-def login():
+def app_login():
     if current_user.is_authenticated:
         return redirect(url_for("home"))
     if request.method == "POST":
@@ -78,9 +78,9 @@ def account():
 
 #Android Application API
 @app.route('/app/account', methods=['GET', 'POST'])
-def account():
+def app_account():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
-    return jsonify({'code': 0, 'user': user})
+    return jsonify({'code': 0, 'user': user.to_json()})
 
 
 @app.route('/logout')
@@ -90,7 +90,7 @@ def logout():
 
 #Android Application API
 @app.route('/app/logout')
-def logout():
+def app_logout():
     logout_user()
     return redirect(url_for('login'))
 
@@ -124,7 +124,7 @@ def register():
 
 #Android Application API
 @app.route('/app/register', methods=['GET', 'POST'])
-def register():
+def app_register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     if request.method == "POST":
@@ -170,7 +170,7 @@ def upload():
 
 # Android Application API
 @app.route('/app/upload', methods=['POST'])
-def upload():
+def app_upload():
         file = request.files['file']
         basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
         if not os.path.exists(basePath):
@@ -196,7 +196,7 @@ def history():
 
 # Android Application API
 @app.route('/app/history',methods=['GET', 'POST'])
-def history():
+def app_history():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
     histories = db.session.query(History, Video).filter(History.video_id == Video.id).filter_by(user_id=user.id, status=1).all()
     return jsonify({'code': 0, 'histories': histories})
@@ -270,7 +270,7 @@ def forget():
 
 # Android Application API
 @app.route('/app/forget', methods=['GET', 'POST'])
-def forget():
+def app_forget():
     if request.method == "POST":
         email_info = request.form.to_dict()
         user = User.query.filter_by(email=email_info.get("email")).first()
