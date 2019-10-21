@@ -10,5 +10,5 @@ class Config(object):
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = '382095390@qq.com'
-    MAIL_PASSWORD = 'utaqwjnajauwbjai'
+    MAIL_PASSWORD = ''
     ADMINS = ['382095390@qq.com']
