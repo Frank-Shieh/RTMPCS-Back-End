@@ -57,6 +57,14 @@ class User(UserMixin, db.Model):
         }
         return json_data
 
+    def get_json(self):
+        return dict(id=self.id,
+                    name=self.name,
+                    password=self.password,
+                    email=self.email,
+                    status=self.status,
+                    role_id=self.role_id)
+
     @staticmethod
     def verify_reset_password_token(token):
         try:

@@ -17,7 +17,6 @@ import tensorflow as tf
 from tensorflow.python.framework import ops
 import cv2,os
 import numpy as np
-
 from video_detection.trackingModule.centroidtracker import CentroidTracker
 from .yolo_v3 import Yolo_v3
 from .utils import load_class_names, draw_frame
@@ -72,7 +71,7 @@ def yolo_detection(iou_threshold, confidence_threshold, input_names, outputDirPa
                                                 feed_dict={inputs: [resized_frame]})
                     # record the number of people according to the detection_result
                     people_number,ct = draw_frame(frame, frame_size, detection_result,
-                               class_names, _MODEL_SIZE, people_number,ct)
+                               class_names, _MODEL_SIZE, people_number, ct)
 
                     # cv2.imshow(win_name, frame)
 

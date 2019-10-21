@@ -80,7 +80,8 @@ def account():
 @app.route('/app/account', methods=['GET', 'POST'])
 def app_account():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
-    return jsonify({'code': 0, 'user': user.to_json()})
+    # return jsonify({'code': 0, 'user': user.to_json()})
+    return jsonify({'code': 0, 'user': user.get_json()})
 
 
 @app.route('/logout')
@@ -150,8 +151,8 @@ def upload():
         return render_template('upload.html', title='Upload File')
     else:
         file = request.files['file']
-        #basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
-        basePath = os.path.join(os.getcwd(), current_user.__getattr__('name'), 'source')
+        basePath = os.path.join('/data', current_user.__getattr__('name'), 'source')
+        # basePath = os.path.join(os.getcwd(), current_user.__getattr__('name'), 'source')
         if not os.path.exists(basePath):
             os.makedirs(basePath)
             os.chmod(basePath, mode=0o777)
@@ -198,8 +199,22 @@ def history():
 @app.route('/app/history',methods=['GET', 'POST'])
 def app_history():
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
-    histories = db.session.query(History, Video).filter(History.video_id == Video.id).filter_by(user_id=user.id, status=1).all()
-    return jsonify({'code': 0, 'histories': histories})
+    data = db.session.query(History, Video).filter(History.video_id == Video.id).filter_by(user_id=user.id, status=1).all()
+    history = []
+    # packing the information into json format
+    for h in data:
+        temp = {}
+        temp['history_id'] = h.History.id
+        temp['user_id'] = h.History.user_id
+        temp['count'] = h.History.count
+        temp['video_id'] = h.History.video_id
+        temp['submit_time'] = h.History.submit_time.strftime("%Y/%m/%d, %H:%M")
+        temp['status'] = h.History.status
+        temp['location'] = h.Video.location
+        temp['name'] = h.Video.name
+        history.append(temp)
+
+    return jsonify({'code': 0, 'errmsg': history})
 
 @app.route('/downloadVideo/<path:id>', methods=['GET', 'POST'])
 def downloadVideo(id):

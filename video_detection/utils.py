@@ -23,7 +23,7 @@ def load_class_names(file_name):
     return class_names
 
 
-def draw_frame(frame, frame_size, boxes_dicts, class_names, model_size, people_number,ct):
+def draw_frame(frame, frame_size, boxes_dicts, class_names, model_size, people_number, ct):
     """Draws detected boxes in a video frame.
     Args:
         frame: A video frame.
