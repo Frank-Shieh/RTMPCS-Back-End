@@ -5,10 +5,8 @@
       <change afterPath="$PROJECT_DIR$/Tom/output/basketball-2019_10_20-140636.mp4" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/Tom/source/basketball-2019_10_20-140636.mp4" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/application/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/video_detection/detect.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_detection/detect.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/video_detection/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/video_detection/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/application/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -229,7 +227,7 @@
       <workItem from="1571355080550" duration="296000" />
       <workItem from="1571356654958" duration="712000" />
       <workItem from="1571531069906" duration="11263000" />
-      <workItem from="1571698618954" duration="262000" />
+      <workItem from="1571698618954" duration="876000" />
     </task>
     <task id="LOCAL-00001" summary="version 0.1.0">
       <created>1566546365130</created>
@@ -343,7 +341,14 @@
       <option name="project" value="LOCAL" />
       <updated>1570691235815</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="update some code">
+      <created>1571698984615</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1571698984615</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

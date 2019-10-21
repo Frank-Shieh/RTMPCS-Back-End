@@ -162,8 +162,9 @@ def upload():
             file.save(uploadPath)
             uploadPath = str(uploadPath.replace("\\", "/"))
             username = current_user.__getattr__('name')
+
             # asynchronous process
-            threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, ), daemon=True).start()
+            threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, 'false'), daemon=True).start()
             flash('File upload successfully')
         else:
             flash('Error file format')
@@ -182,7 +183,7 @@ def app_upload():
             file.save(uploadPath)
             uploadPath = str(uploadPath.replace("\\", "/"))
             username = current_user.__getattr__('name')
-            threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, ), daemon=True).start()
+            threading.Thread(target=run_detection, args=(0.5, 0.5, uploadPath, file.filename, username, 'true'), daemon=True).start()
             # future = executor.submit(run_detection, 0.5, 0.5, uploadPath, file.filename, username)
             return jsonify({'code': 0, 'errmsg': "Upload Success!"})
         else:

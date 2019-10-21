@@ -1,14 +1,14 @@
 import threading
-
+import jpush
 from video_detection.detect import yolo_detection
 import os, sys
 from .models import Video, User, History, Message
-from . import app, db
+from . import app, db, _jpush
 from .email import send_notification_email
 from datetime import datetime
 
 
-def run_detection(iou_threshold, confidence_threshold, source_address, source_file_name, username):
+def run_detection(iou_threshold, confidence_threshold, source_address, source_file_name, username, app_request):
     basePath = os.path.split(os.path.dirname(source_address))[0]
 
     outputDirPath = os.path.join(basePath, 'output')
@@ -26,7 +26,7 @@ def run_detection(iou_threshold, confidence_threshold, source_address, source_fi
     video_id = newVideo.id
     # get current user id
     user = User.query.filter_by(name=username).first()
-    if FLAG:
+    if app_request == 'true':
         # send notification to APP
         push = _jpush.create_push()
         push.audience = jpush.audience(jpush.alias(username))
