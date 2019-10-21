@@ -26,8 +26,16 @@ def run_detection(iou_threshold, confidence_threshold, source_address, source_fi
     video_id = newVideo.id
     # get current user id
     user = User.query.filter_by(name=username).first()
-    # send email to user
-    send_notification_email(user)
+    if FLAG:
+        # send notification to APP
+        push = _jpush.create_push()
+        push.audience = jpush.audience(jpush.alias(username))
+        push.notification = jpush.notification(alert="Video Completed!")
+        push.platform = jpush.all_
+        push.send()
+    else:
+        # send email to user
+        send_notification_email(user)
     # add history
     newHistory = History(user_id=user.id, count=people_number,
                          video_id=video_id, submit_time=datetime.now(), status=1)
