@@ -35,8 +35,8 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
-    def new_messages(self):
-        last_read_time = self.last_message_read_time or datetime(1900, 1, 1)
+    def new_messages(self, last_time):
+        last_read_time = last_time or datetime(1900, 1, 1)
         return Message.query.filter_by(recipient=self).filter(Message.time_stamp > last_read_time).count()
 
     def get_reset_password_token(self, expires_in=600):

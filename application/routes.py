@@ -263,7 +263,7 @@ def refresh_notification():
     # count the unread message number
     user = User.query.filter_by(name=current_user.__getattr__('name')).first()
     messages = {}
-    counter = user.new_messages()
+    counter = user.new_messages(user.last_message_read_time)
     messages[0] = counter
     return json.dumps(messages)
 
